@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>拔草機器人 架構圖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F4F6F8; --soft2:#E9ECEF;
+  --ink:#16191D; --ink2:#59626D; --ink3:#636C78; --line:#DDE2E7;
+  --ac:#E8591C; --ac-bg:#FDEDE4;
+  --go:#2E9E62; --go-bg:#E4F4EB;
+  --hold:#C98A10; --hold-bg:#FCF2DC;
+  --stop:#D8432F; --stop-bg:#FBE4E1;
+  --hw:#E8591C; --fw:#7C5CD6; --sw:#2C7BC4; --ai:#12876A;
+  --pw:#B8860B; --pw-bg:#FBF4DD;
+  --sans:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1B1F23; --soft2:#242A30;
+  --ink:#ECEFF2; --ink2:#A9B2BB; --ink3:#949DA7; --line:#2A3036;
+  --ac:#FF7A3D; --ac-bg:#33200F;
+  --go:#4FBF84; --go-bg:#152B1D; --hold:#DDA53A; --hold-bg:#2E260F;
+  --stop:#F0705C; --stop-bg:#331A16;
+  --hw:#FF7A3D; --fw:#A78BFA; --sw:#5BA3E8; --ai:#3FBF9E;
+  --pw:#E0B040; --pw-bg:#2E2810;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1B1F23; --soft2:#242A30;
+  --ink:#ECEFF2; --ink2:#A9B2BB; --ink3:#949DA7; --line:#2A3036;
+  --ac:#FF7A3D; --ac-bg:#33200F;
+  --go:#4FBF84; --go-bg:#152B1D; --hold:#DDA53A; --hold-bg:#2E260F;
+  --stop:#F0705C; --stop-bg:#331A16;
+  --hw:#FF7A3D; --fw:#A78BFA; --sw:#5BA3E8; --ai:#3FBF9E;
+  --pw:#E0B040; --pw-bg:#2E2810;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);margin:0;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:1280px;margin:0 auto;padding:44px 36px 56px}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:22px;border-bottom:2px solid var(--ink)}
+.hd h1{margin:0;font-size:clamp(26px,3.6vw,38px);font-weight:900;letter-spacing:-.02em}
+.hd p{margin:8px 0 0;font-size:16px;color:var(--ink2);max-width:62ch}
+.hd .meta{font-family:var(--mono);font-size:12.5px;color:var(--ink3);text-align:right;white-space:nowrap}
+h2{font-size:24px;font-weight:900;margin:56px 0 6px;letter-spacing:-.01em}
+h2 + p{margin:0 0 22px;color:var(--ink2);font-size:15.5px;max-width:70ch}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:99px;background:var(--ac-bg);color:var(--ac);vertical-align:middle;margin-left:8px}
+
+/* 四條線 */
+.chart{display:flex;flex-direction:column;gap:14px}
+.lane{display:grid;grid-template-columns:210px 1fr;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.lh{padding:20px 22px;display:flex;flex-direction:column;justify-content:center;gap:7px;border-right:1.5px solid var(--line)}
+.lh .nm{display:flex;align-items:center;gap:9px}
+.lh .dot{width:12px;height:12px;border-radius:3px;flex:0 0 auto}
+.lh b{font-size:23px;font-weight:900}
+.lh .what{font-size:13.5px;color:var(--ink3);line-height:1.45}
+.lh .prog{display:flex;align-items:center;gap:9px;margin-top:3px}
+.lh .track{flex:1;height:7px;border-radius:99px;background:var(--soft2);overflow:hidden}
+.lh .fill{height:100%;border-radius:99px}
+.lh .pct{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ink3)}
+.lh .pct.on{color:var(--ac)}
+.steps{display:flex;align-items:stretch;padding:18px 20px;overflow-x:auto}
+.step{flex:1;min-width:150px;border-radius:9px;padding:14px 16px;background:var(--soft);display:flex;flex-direction:column;gap:5px;border:1.5px solid transparent}
+.step .code{font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink3)}
+.step .t{font-size:17.5px;font-weight:700;line-height:1.25}
+.step .d{font-size:13px;color:var(--ink3);line-height:1.4}
+.step.done{background:var(--go-bg);border-color:var(--go)} .step.done .code{color:var(--go)}
+.step.now{background:var(--ac-bg);border-color:var(--ac)} .step.now .code{color:var(--ac)}
+.arw{flex:0 0 30px;display:grid;place-items:center;color:var(--line);font-size:20px;font-weight:700}
+.gate-row{display:grid;grid-template-columns:210px 1fr;align-items:center;margin:-4px 0}
+.gate{margin-left:20px;display:inline-flex;align-items:center;gap:12px;background:var(--stop);color:#fff;border-radius:9px;padding:11px 18px;font-size:15.5px;font-weight:700;box-shadow:0 2px 10px rgba(216,67,47,.25);flex-wrap:wrap}
+.gate .k{font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.22);padding:3px 9px;border-radius:5px;letter-spacing:.05em}
+.gate .why{font-weight:400;font-size:14px;opacity:.94}
+
+/* 系統方塊圖 */
+.sys{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:12px}
+.blk{border:1.5px solid var(--line);border-radius:12px;background:var(--bg);overflow:hidden}
+.blk .bh{padding:11px 16px;background:var(--soft);border-bottom:1.5px solid var(--line);display:flex;align-items:center;gap:9px}
+.blk .bh b{font-size:16px;font-weight:900}
+.blk .bh .dot{width:11px;height:11px;border-radius:3px}
+.blk .bb{padding:13px 16px;display:flex;flex-direction:column;gap:9px}
+.unit{border-radius:8px;padding:10px 13px;background:var(--soft);display:flex;flex-direction:column;gap:2px}
+.unit b{font-size:15px;font-weight:700}
+.unit span{font-size:12.5px;color:var(--ink2);line-height:1.45}
+.unit .m{font-family:var(--mono);font-size:11.5px;color:var(--ink3)}
+.unit.ac{background:var(--ac-bg)}
+.unit.pw{background:var(--pw-bg)}
+.unit.go{background:var(--go-bg)}
+.flow{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--ink3);font-size:13px;padding:2px 0}
+.flow .a{color:var(--ac);font-weight:700;font-size:18px}
+.bus{border:1.5px dashed var(--sw);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--sw);font-weight:700;text-align:center;font-family:var(--mono)}
+.grp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.joint{border-radius:7px;padding:8px 11px;background:var(--soft);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.joint b{font-weight:700}
+.joint .m{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--hw)}
+.hint{font-size:12.5px;color:var(--ink3);line-height:1.5;padding:4px 2px 0}
+.pend{color:var(--hold);font-weight:700}
+.back{display:inline-block;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ac);text-decoration:none;margin-bottom:18px}
+@media(max-width:900px){.steps{flex-wrap:wrap;gap:8px;overflow-x:visible}.steps .arw{display:none}.step{flex:1 1 calc(50% - 4px);min-width:0}}
+
+.legend{margin-top:26px;display:flex;gap:26px;flex-wrap:wrap;align-items:center;padding-top:18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink3)}
+.legend i{font-style:normal;display:inline-flex;align-items:center;gap:7px}
+.legend .sw{width:14px;height:14px;border-radius:4px;display:inline-block}
+.foot{margin-top:22px;font-size:13px;color:var(--ink3);line-height:1.7}
+@media(max-width:980px){.sys{grid-template-columns:1fr}}
+@media(max-width:900px){.lane,.gate-row{grid-template-columns:1fr}.lh{border-right:0;border-bottom:1.5px solid var(--line)}.gate{margin-left:0}.page{padding:28px 18px 40px}}
+</style>
+
+<div class="page">
+<a class="back" href="index.html">← 拔草機器人．一頁看懂</a>
+
+<div class="hd">
+  <div>
+    <h1>拔草機器人 架構圖 <span class="tag">C 路線</span></h1>
+    <p>V1 的骨架與 22 DOF 構型不動，把 3D 列印致動器換成 RobStride 一體式模組。上圖是四條線怎麼推，下圖是硬體怎麼接。</p>
+  </div>
+  <div class="meta">拔草機器人專案<br>2026-09-20</div>
+</div>
+
+<h2>一、四條線，每條四個階段</h2>
+<p>四條線同時開工。換成商用致動器後，硬體線少掉減速機與韌體燒錄，關卡從「測塑膠齒輪壽命」變成「一顆先過再買 21 顆」——更便宜、更快。</p>
+
+<div class="chart">
+  <div class="lane">
+    <div class="lh">
+      <div class="nm"><span class="dot" style="background:var(--hw)"></span><b>硬體</b></div>
+      <div class="what">轉接件、22 顆致動器上位、骨架與配線</div>
+      <div class="prog"><span class="track"><span class="fill" style="width:0%;background:var(--hw)"></span></span><span class="pct">0%</span></div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="code">H1</span><span class="t">畫＋印轉接件</span><span class="d">8–10 種，PETG／PA-CF</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">H2</span><span class="t">裝一顆 RS06</span><span class="d">膝關節，加載測</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">H3</span><span class="t">整機骨架</span><span class="d">鋁擠・22 顆上位</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">H4</span><span class="t">配線電源</span><span class="d">電池・降壓・CAN</span></div>
+    </div>
+  </div>
+
+  <div class="gate-row">
+    <div></div>
+    <div><span class="gate"><span class="k">關卡</span>一顆 RS06 裝上、加載、CAN 250 Hz 通，綠燈才買 21 顆<span class="why">—— 一顆 NT$4–7k，一個週末</span></span></div>
+  </div>
+
+  <div class="lane">
+    <div class="lh">
+      <div class="nm"><span class="dot" style="background:var(--fw)"></span><b>致動器設定</b></div>
+      <div class="what">出廠有韌體，不用燒；要設 ID、限流、零點</div>
+      <div class="prog"><span class="track"><span class="fill" style="width:0%;background:var(--fw)"></span></span><span class="pct">0%</span></div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="code">F1</span><span class="t">工具與協定</span><span class="d">上位機・actuator-control</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">F2</span><span class="t">逐顆設定</span><span class="d">CAN ID・電流上限・限位</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">F3</span><span class="t">設零點</span><span class="d">絕對編碼器，存機內</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">F4</span><span class="t">22 顆測通</span><span class="d">扭矩模式回饋・貼標籤</span></div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lh">
+      <div class="nm"><span class="dot" style="background:var(--sw)"></span><b>軟體</b></div>
+      <div class="what">把模型放上機器人，讓它聽指令</div>
+      <div class="prog"><span class="track"><span class="fill" style="width:0%;background:var(--sw)"></span></span><span class="pct">0%</span></div>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="code">S1</span><span class="t">CAN 驅動</span><span class="d">RobStride 協定・250 Hz</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">S2</span><span class="t">部署模型</span><span class="d">ONNX 上 Jetson・25 Hz</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">S3</span><span class="t">搖桿＋安全</span><span class="d">UDP・watchdog・錄製</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">S4</span><span class="t">視覺整合</span><span class="d">雙目標定・雜草辨識</span></div>
+    </div>
+  </div>
+
+  <div class="lane">
+    <div class="lh">
+      <div class="nm"><span class="dot" style="background:var(--ai)"></span><b>AI 模型</b></div>
+      <div class="what">在模擬裡把走路練出來：技能一段一段接力；A5 WAM 已訓 27.7 萬步、暫停中</div>
+      <div class="prog"><span class="track"><span class="fill" style="width:75%;background:var(--ai)"></span></span><span class="pct on">75%</span></div>
+    </div>
+    <div class="steps">
+      <div class="step done"><span class="code">A1 完成</span><span class="t">訓練行走基準</span><span class="d">PPO 特權觀測策略・有驗收的續訓</span></div>
+      <div class="arw">›</div>
+      <div class="step done"><span class="code">A2 完成</span><span class="t">蒸餾視覺策略</span><span class="d">深度圖＋本體；實機接雙目估深度（2 欄仍待適配）</span></div>
+      <div class="arw">›</div>
+      <div class="step now"><span class="code">A3 進行中</span><span class="t">補技能＋換參數</span><span class="d">站穩（09-24 起）・下樓改單階・RobStride 質量與減速比</span></div>
+      <div class="arw">›</div>
+      <div class="step"><span class="code">A4</span><span class="t">驗證匯出</span><span class="d">MuJoCo 驗證・出 ONNX</span></div>
+    </div>
+  </div>
+</div>
+
+<h2>二、硬體系統圖</h2>
+<p>誰接誰。訓練端在桌上，其餘全部在機器人身上。致動器是一體式：馬達、行星減速、雙 14-bit 絕對編碼器、FOC 驅動全在殼裡，對外只有電源與 CAN 兩條線。</p>
+
+<div class="sys">
+
+  <div class="col">
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--ai)"></span><b>訓練端（桌上）</b></div>
+      <div class="bb">
+        <div class="unit go"><b>GB10</b><span>Isaac Lab：PPO 行走與視覺蒸餾；Cosmos3-Edge：動作條件世界預測</span><span class="m">統一記憶體 119 GiB</span></div>
+        <div class="unit"><b>雲端 RTX 4090（備援）</b><span>一次訓練 NT$7–23</span></div>
+        <div class="flow"><span>匯出</span><span class="a">↓</span><span class="m" style="font-family:var(--mono)">視覺行走策略 ONNX（待匯出；接雙目估深度）</span></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--pw)"></span><b>電源</b></div>
+      <div class="bb">
+        <div class="unit pw"><b>6S LiPo 5000 mAh ×2 串成 12S（44.4 V）</b><span>再備一組輪替；續航約 30 分（估）</span></div>
+        <div class="flow"><span class="a">↓</span></div>
+        <div class="unit pw"><b>斷路器 ＋ 電壓／電流監視</b><span>手切總開關，過流保護</span></div>
+        <div class="flow"><span class="a">↓</span><span>44.4 V 匯流排</span></div>
+        <div class="unit pw"><b>致動器直供 44.4 V</b><span>RS05／RS06 15–60 V、RS00／RS02 24–60 V——6S 不夠，串成 12S</span></div>
+        <div class="unit pw"><b>48→19 V／5 A DC-DC → Jetson</b></div>
+        <div class="unit pw"><b>48→12 V → USB hub、IMU</b></div>
+        <div class="unit pw"><b>12→5 V → 週邊</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--sw)"></span><b>機載主控</b></div>
+      <div class="bb">
+        <div class="unit ac"><b>Jetson Orin Nano Super 8 GB</b><span>JetPack 6・ONNX Runtime・policy 25 Hz・控制迴圈 250 Hz（SCHED_FIFO、鎖 MAXN）・watchdog</span><span class="m">NT$16,278（德源）／益登代理 NT$13,800</span></div>
+        <div class="flow"><span class="a">↓</span><span>USB</span></div>
+        <div class="unit"><b>USB-CAN 轉接器 ×4</b><span>socketcan・1 Mbps・每條匯流排掛 5–6 顆（250 Hz 扭矩模式上限約 12 顆／條，留一倍餘裕）</span><span class="m">FYSETC US$8／顆</span></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--hw)"></span><b>致動器 22 顆 RobStride</b></div>
+      <div class="bb">
+        <div class="bus">can0 左腿 6 顆</div>
+        <div class="grp">
+          <div class="joint"><b>髖 pitch</b><span class="m">RS06</span></div>
+          <div class="joint"><b>髖 roll</b><span class="m">RS06</span></div>
+          <div class="joint"><b>膝</b><span class="m">RS06</span></div>
+          <div class="joint"><b>髖 yaw</b><span class="m">RS02</span></div>
+          <div class="joint"><b>踝 pitch</b><span class="m">RS00</span></div>
+          <div class="joint"><b>踝 roll</b><span class="m">RS05</span></div>
+        </div>
+        <div class="bus">can1 右腿 6 顆（鏡射）</div>
+        <div class="bus">can2 左臂 5 顆</div>
+        <div class="grp">
+          <div class="joint"><b>肩 pitch</b><span class="m">RS02</span></div>
+          <div class="joint"><b>肩 roll</b><span class="m">RS00</span></div>
+          <div class="joint"><b>肩 yaw</b><span class="m">RS00</span></div>
+          <div class="joint"><b>肘 pitch</b><span class="m">RS00</span></div>
+          <div class="joint" style="grid-column:span 2"><b>肘 roll／腕</b><span class="m">RS05</span></div>
+        </div>
+        <div class="bus">can3 右臂 5 顆（鏡射）</div>
+        <p class="hint">合計 RS06 ×6・RS02 ×4・RS00 ×8・RS05 ×4。每顆回傳位置、速度、實測扭矩、溫度。峰值／額定 N·m：RS06 36／11、RS02 17／7、RS00 14／5、RS05 5.5／1.8。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--ai)"></span><b>感測</b></div>
+      <div class="bb">
+        <div class="unit"><b>雙目攝影機 Arducam B0266</b><span>OV9281 ×2 全域快門・硬體同步・基線 120 mm・CSI 22-pin ×2 → Jetson ISP</span><span class="m">US$164.99</span></div>
+        <div class="unit"><b>IMU</b><span>BNO085（內建融合）或 HiWonder IM10A（USB）→ Jetson</span><span class="m">NT$638–1,578</span></div>
+        <div class="unit"><b>致動器內建回饋</b><span>22 顆的位置／速度／扭矩／溫度，走 CAN 回來</span></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--sw)"></span><b>操作端</b></div>
+      <div class="bb">
+        <div class="unit"><b>搖桿</b><span>UDP port 10011・13 bytes（mode＋vx／vy／vyaw）→ Jetson</span></div>
+        <div class="unit"><b>開發筆電</b><span>SSH・MeshCat 視覺化・資料錄製（HDF5）</span></div>
+        <div class="unit"><b>緊急停止</b><span>斷路器手切；watchdog 逾時自動進阻尼</span></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--hw)"></span><b>結構與末端</b></div>
+      <div class="bb">
+        <div class="unit"><b>骨架</b><span>V1 原設計：2020 鋁擠軀幹＋3D 列印外殼</span></div>
+        <div class="unit ac"><b>轉接件 ×22（新畫）</b><span>一邊鎖 RobStride 法蘭、一邊接 V1 連桿。8–10 種獨特設計，左右鏡射。PETG／PA-CF</span></div>
+        <div class="unit"><b>夾爪 ×2</b><span>伺服夾爪 serial 115200；拔草鋼爪自行設計、金工外包</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <i><span class="sw" style="background:var(--go-bg);border:1.5px solid var(--go)"></span>已完成</i>
+  <i><span class="sw" style="background:var(--ac-bg);border:1.5px solid var(--ac)"></span>進行中／本路線新增</i>
+  <i><span class="sw" style="background:var(--soft)"></span>未開始</i>
+  <i><span class="sw" style="background:var(--stop)"></span>關卡</i>
+</div>
+
+<p class="foot">
+  致動器成本：中國原廠直購約 NT$66–70k（¥14,670）、Seeed 寄台灣約 NT$109k（含 5% 營業稅）。對照 V1 自製 22 顆 NT$87,523。整案估 15.1 萬（中國）／19.3 萬（Seeed），皆在 20 萬內。<br>
+  先做順序：一顆膝（RS06）→ 一條腿 → 雙腿＋軀幹能走（不到 7 萬）→ 雙臂。V1 本來就有 12 DOF 純雙足的訓練任務，沒手臂也能走。<br>
+  決策大腦：第一版＝YOLO 偵測草＋地平面測距＋狀態機（兩週能動、同時錄資料）；第二版＝以 Cosmos3-Edge 發展 WAM 世界動作模型，09-14～09-19 在 GB10 已訓 27.7 萬步（模擬資料），目前暫停；第一版錄的真機回合再續訓，先當軌跡排序器、贏過狀態機再接手。<br>
+  需求規格（每個子系統的數字門檻）與訓練怎麼接力，放在詳細版 §7、§10。
+</p>
+
+</div>

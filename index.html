@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>拔草機器人 一頁看懂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F5F6F8; --soft2:#EAEDF0;
+  --ink:#16191D; --ink2:#5B6470; --ink3:#636C78; --line:#DFE3E8;
+  --ac:#E8591C; --ac-bg:#FDEEE6;
+  --go:#2E9E62; --go-bg:#E6F5EC;
+  --hold:#B97A0E; --hold-bg:#FBF1DC;
+  --stop:#D8432F; --stop-bg:#FBE5E2;
+  --hw:#E8591C; --fw:#7C5CD6; --sw:#2C7BC4; --ai:#12876A; --pw:#B8860B; --pw-bg:#FBF4DD;
+  --sans:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1C2024; --soft2:#252A2F;
+  --ink:#ECEFF2; --ink2:#AEB6BF; --ink3:#949DA7; --line:#2C3238;
+  --ac:#FF7A3D; --ac-bg:#33200F; --go:#4FBF84; --go-bg:#16301F;
+  --hold:#DDA53A; --hold-bg:#33290F; --stop:#F0705C; --stop-bg:#341A16;
+  --hw:#FF7A3D; --fw:#A78BFA; --sw:#5BA3E8; --ai:#3FBF9E; --pw:#E0B040; --pw-bg:#2E2810;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1C2024; --soft2:#252A2F;
+  --ink:#ECEFF2; --ink2:#AEB6BF; --ink3:#949DA7; --line:#2C3238;
+  --ac:#FF7A3D; --ac-bg:#33200F; --go:#4FBF84; --go-bg:#16301F;
+  --hold:#DDA53A; --hold-bg:#33290F; --stop:#F0705C; --stop-bg:#341A16;
+  --hw:#FF7A3D; --fw:#A78BFA; --sw:#5BA3E8; --ai:#3FBF9E; --pw:#E0B040; --pw-bg:#2E2810;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+h1,h2,h3{margin:0;font-weight:900;line-height:1.2;text-wrap:balance}
+p{margin:0}
+a{color:var(--ac)}
+.pend{color:var(--hold);font-weight:700}
+.hero{padding:64px 0 52px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--ac);font-weight:700;text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,62px);letter-spacing:-.025em;margin-top:18px}
+.hero p.lede{font-size:clamp(18px,2.2vw,23px);color:var(--ink2);margin-top:20px;max-width:56ch;line-height:1.5}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:2px;margin-top:40px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.nums>div{background:var(--bg);padding:20px 22px}
+.nums b{display:block;font-family:var(--mono);font-size:32px;font-weight:700;letter-spacing:-.02em;color:var(--ac)}
+.nums span{font-size:14px;color:var(--ink2);display:block;margin-top:4px}
+section{padding:56px 0}
+section+section{border-top:1px solid var(--line)}
+.sk{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ac);letter-spacing:.06em}
+h2{font-size:clamp(24px,3.4vw,36px);margin-top:10px;letter-spacing:-.02em}
+.sub{font-size:18px;color:var(--ink2);margin-top:14px;max-width:64ch;line-height:1.6}
+.goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:30px}
+.goal{border:1px solid var(--line);border-radius:10px;padding:22px 24px;background:var(--bg)}
+.goal .g-n{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em}
+.goal h3{font-size:21px;margin-top:8px}
+.goal p{font-size:15px;color:var(--ink2);margin-top:10px;line-height:1.5}
+.lines{margin-top:32px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.line{display:grid;grid-template-columns:200px 1fr 86px;border-bottom:1px solid var(--line)}
+.line:last-child{border-bottom:0}
+.line-h{padding:22px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:5px}
+.line-h b{font-size:22px;font-weight:900}
+.line-h span{font-size:14px;color:var(--ink3);line-height:1.4}
+.line-s{display:flex;align-items:stretch;padding:18px 20px;overflow-x:auto}
+.st{flex:1;min-width:130px;background:var(--soft);border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;justify-content:center}
+.st.done{background:var(--go-bg)} .st.doing{background:var(--ac-bg)}
+.st em{font-family:var(--mono);font-size:11px;font-style:normal;font-weight:700;color:var(--ink3);letter-spacing:.05em}
+.st.done em{color:var(--go)} .st.doing em{color:var(--ac)}
+.st b{font-size:17px;font-weight:700;margin-top:3px}
+.arw{flex:0 0 30px;display:grid;place-items:center;color:var(--line);font-size:17px}
+.line-p{display:grid;place-items:center;border-left:1px solid var(--line);font-family:var(--mono);font-size:21px;font-weight:700;color:var(--ink3)}
+.line-p.on{color:var(--ac)}
+@media(max-width:760px){.line{grid-template-columns:1fr}.line-h{border-right:0;border-bottom:1px solid var(--line)}.line-p{border-left:0;border-top:1px solid var(--line);padding:12px}}
+/* 系統圖（簡） */
+.sys{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:28px}
+.blk{border:1.5px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
+.blk .bh{padding:11px 16px;background:var(--soft);border-bottom:1.5px solid var(--line);font-size:16px;font-weight:900;display:flex;gap:9px;align-items:center}
+.blk .dot{width:11px;height:11px;border-radius:3px}
+.blk .bb{padding:13px 16px;display:flex;flex-direction:column;gap:8px}
+.unit{border-radius:8px;padding:9px 12px;background:var(--soft);font-size:14.5px;line-height:1.45}
+.unit b{font-weight:700}
+.unit small{display:block;color:var(--ink2);font-size:13px;margin-top:2px}
+.unit.ac{background:var(--ac-bg)} .unit.pw{background:var(--pw-bg)} .unit.go{background:var(--go-bg)}
+.ja{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ja div{background:var(--soft);border-radius:6px;padding:6px 10px;font-size:13.5px;display:flex;justify-content:space-between}
+.ja div i{font-style:normal;font-family:var(--mono);font-weight:700;color:var(--hw);font-size:12.5px}
+/* 階段 */
+.phases{display:grid;gap:16px;margin-top:30px}
+.phase{display:grid;grid-template-columns:170px 1fr 200px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.phase.first{border:2px solid var(--ac);box-shadow:0 4px 18px rgba(232,89,28,.12)}
+.phase>div{padding:22px 24px}
+.ph-k{border-right:1.5px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:6px}
+.ph-k .n{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--ac)}
+.ph-k b{font-size:22px;font-weight:900;line-height:1.15}
+.ph-k span{font-size:13px;color:var(--ink3);margin-top:4px}
+.ph-b h3{font-size:19px;margin-bottom:10px}
+.ph-b ol{margin:0;padding-left:20px}
+.ph-b li{font-size:15.5px;color:var(--ink2);margin-top:6px;line-height:1.5}
+.ph-b li b{color:var(--ink)}
+.ph-r{border-left:1.5px solid var(--line);background:var(--soft);display:flex;flex-direction:column;justify-content:center;gap:8px}
+.ph-r .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink3);text-transform:uppercase}
+.ph-r .v{font-size:20px;font-weight:900}
+.ph-r .v small{font-size:13px;font-weight:400;color:var(--ink3);display:block}
+.ph-r .gate{font-size:13.5px;color:var(--go);font-weight:700;margin-top:4px}
+.phase.first .ph-r{background:var(--ac-bg)}
+@media(max-width:820px){.phase{grid-template-columns:1fr}.ph-k{border-right:0;border-bottom:1.5px solid var(--line)}.ph-r{border-left:0;border-top:1.5px solid var(--line)}}
+.risks{display:grid;gap:12px;margin-top:28px}
+.risk{display:grid;grid-template-columns:230px 1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.risk>div{padding:18px 22px}
+.risk .r-n{font-size:18px;font-weight:700;border-right:1px solid var(--line);display:flex;align-items:center}
+.risk .r-p{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px;color:var(--ink2)}
+.risk .r-p b{background:var(--soft);border-radius:6px;padding:7px 13px;color:var(--ink);font-weight:700;font-size:15px}
+.risk .r-p i{font-style:normal;color:var(--ink3)}
+@media(max-width:760px){.risk{grid-template-columns:1fr}.risk .r-n{border-right:0;border-bottom:1px solid var(--line)}}
+.final{margin-top:30px;border:2px solid var(--stop);border-radius:10px;padding:26px 28px;background:var(--stop-bg)}
+.final b{font-size:22px;color:var(--stop);font-weight:900}
+.final p{font-size:16.5px;color:var(--ink);margin-top:10px;line-height:1.55}
+.cta{margin-top:30px;padding:26px 28px;border-radius:10px;background:var(--soft);border:1px solid var(--line)}
+.cta h3{font-size:19px}
+.cta ul{margin:14px 0 0;padding-left:22px}
+.cta li{font-size:16px;color:var(--ink2);margin-top:9px;line-height:1.5}
+.cta li b{color:var(--ink)}
+.cta a{color:var(--ac);font-weight:700}
+.want{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:22px}
+.want div{border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.want b{font-size:17px;display:block}
+.want span{font-size:14.5px;color:var(--ink2);line-height:1.5;display:block;margin-top:6px}
+/* 訓練接力 */
+.relay{display:grid;gap:12px;margin-top:30px}
+.rl{display:grid;grid-template-columns:56px 1fr 240px;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.rl>div{padding:20px 22px}
+.rl .rl-n{display:grid;place-items:center;padding:20px 0;font-family:var(--mono);font-size:22px;font-weight:700;color:var(--ink3);border-right:1.5px solid var(--line);background:var(--soft)}
+.rl.done .rl-n{color:var(--go);background:var(--go-bg)}
+.rl.doing{border:2px solid var(--ac)}
+.rl.doing .rl-n{color:var(--ac);background:var(--ac-bg)}
+.rl-b{align-self:center}
+.rl-b h3{font-size:19px}
+.rl-b p{font-size:15.5px;color:var(--ink2);margin-top:8px;line-height:1.55}
+.rl-b p small{display:block;font-size:13.5px;color:var(--ink3);margin-top:6px}
+.rl-r{border-left:1.5px solid var(--line);background:var(--soft);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.rl-r b{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.rl-r span{font-size:13px;color:var(--ink2);line-height:1.4}
+.rl-r span+b{margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px}
+.chips span{font-size:14px;font-weight:700;padding:5px 11px;border-radius:99px;background:var(--soft2);color:var(--ink2)}
+.chips span.ok{background:var(--go-bg);color:var(--go)}
+.chips span.now{background:var(--ac-bg);color:var(--ac)}
+.chips i{font-style:normal;color:var(--ink3)}
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:22px}
+.vs figure{margin:0}
+.vs video{display:block;width:100%;aspect-ratio:16/9;background:#0E1012;border-radius:8px}
+.vs figcaption{font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.5}
+.vs figcaption b{color:var(--ink)}
+@media(max-width:820px){.rl{grid-template-columns:48px 1fr}.rl-r{grid-column:1/-1;border-left:0;border-top:1.5px solid var(--line)}}
+.who{margin-top:18px;font-size:15.5px}
+.tldr{margin-top:34px;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.tldr a{display:grid;grid-template-columns:104px 1fr;gap:4px 18px;padding:16px 22px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line);background:var(--bg)}
+.tldr a:last-child{border-bottom:0}
+.tldr a:hover{background:var(--soft)}
+.tldr a:focus-visible{outline:2px solid var(--ac);outline-offset:-2px}
+.tldr em{grid-row:1/3;font-style:normal;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ac);letter-spacing:.06em;padding-top:4px}
+.tldr b{font-size:17.5px;font-weight:700;line-height:1.45}
+.tldr span{font-size:14.5px;color:var(--ink2);line-height:1.5}
+@media(max-width:600px){.tldr a{grid-template-columns:1fr;padding:14px 18px}.tldr em{grid-row:auto;padding-top:0}}
+section[id]{scroll-margin-top:12px}
+.me{margin-top:26px;border:1.5px solid var(--line);border-radius:10px;padding:24px 26px;background:var(--bg);scroll-margin-top:20px}
+.me h3{font-size:20px;margin-top:6px}
+.me-l{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.me-l li{display:grid;grid-template-columns:96px 1fr;gap:12px;font-size:15.5px;color:var(--ink2);line-height:1.55}
+.me-l li b{color:var(--ink);font-size:15px}
+.me-more{margin-top:16px;font-size:15px;color:var(--ink2)}
+@media(max-width:600px){.me{padding:20px}.me-l li{grid-template-columns:1fr;gap:2px}}
+@media(max-width:760px){.line-s{flex-wrap:wrap;gap:8px;overflow-x:visible}.line-s .arw{display:none}.line-s .st{flex:1 1 calc(50% - 4px);min-width:0}}
+footer{border-top:1px solid var(--line);margin-top:56px;background:var(--soft)}
+footer .wrap{padding:30px 32px 50px}
+footer p{font-size:13.5px;color:var(--ink3);line-height:1.75}
+@media(max-width:600px){.wrap{padding:0 18px}}
+</style>
+
+<div class="wrap">
+
+<div class="hero">
+  <div class="eyebrow">一頁看懂 · 2026-09</div>
+  <h1>一台會自己<br>拔草的人形機器人</h1>
+  <p class="lede">用開源的 Berkeley Humanoid Lite 骨架、商用一體式關節，先在電腦模擬裡把走路練出來，再搬上真的機器。先讓它會走，再讓它會看，最後讓它會拔。</p>
+  <div class="tldr">
+    <a href="#what"><em>要幹嘛</em><b>一台會自己走到雜草前面、把草拔掉的雙足人形機器人</b><span>身高 0.8 m、約 16 kg、22 個關節。三關驗收：走得穩 → 站得住、看得到 → 拔得起來</span></a>
+    <a href="#how"><em>怎麼做</em><b>開源骨架＋商用關節；走路先在模擬裡練，再搬上實機</b><span>四條線同時推：硬體、致動器設定、軟體、AI 模型。Isaac Lab 訓練行走；Cosmos3-Edge 訓練世界預測，逐步接入決策</span></a>
+    <a href="#phases"><em>幾個階段</em><b>四個階段，約 8 個月到實機走路</b><span>第一階段只花約 1 萬：買一顆關節、印轉接件、測三件事；過關才花下一筆。零件總計約 15–19 萬</span></a>
+    <a href="#train"><em>現在到哪</em><b>模擬裡會走、會爬樓梯、走完一整條辦公樓路線</b><span>實機零件還沒買；「到定點站穩 10 秒」模擬裡還沒過，09-24 起在練</span></a>
+  </div>
+</div>
+
+<section id="what">
+  <div class="sk">01</div>
+  <h2>要做什麼</h2>
+  <p class="sub">做一台會自己走到雜草前面、把草拔掉的雙足人形機器人。三關驗收，遞進的：站不穩就不可能拔草。</p>
+  <div class="goals">
+    <div class="goal"><div class="g-n" style="color:var(--go)">第一關</div><h3>在平地走 10 公尺不摔</h3><p>模擬裡已經會走了。實機零件還沒買。</p></div>
+    <div class="goal"><div class="g-n" style="color:var(--hold)">第二關</div><h3>到定點後站穩 10 秒</h3><p>模擬裡目前 <b>0%</b>，最長 1.52 秒。會走、會爬，但停下來站不住。</p></div>
+    <div class="goal"><div class="g-n" style="color:var(--stop)">第三關</div><h3>看到草、走過去、拔起來</h3><p>手臂力有限，拔不動就改剪斷，或蹲下用身體重量帶。</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="sk">02</div>
+  <h2>四條線同時推</h2>
+  <p class="sub">硬體、致動器設定、軟體、AI 模型。每條四個階段。AI 那條已經做到第三階段——模擬裡走完一整條辦公樓路線 87.5%。</p>
+  <div class="lines">
+    <div class="line">
+      <div class="line-h"><b style="color:var(--hw)">硬體</b><span>畫轉接件、22 顆上位、骨架配線</span></div>
+      <div class="line-s">
+        <div class="st"><em>H1</em><b>畫＋印轉接件</b></div><div class="arw">›</div>
+        <div class="st"><em>H2</em><b>裝一顆驗證</b></div><div class="arw">›</div>
+        <div class="st"><em>H3</em><b>整機骨架</b></div><div class="arw">›</div>
+        <div class="st"><em>H4</em><b>配線電源</b></div>
+      </div>
+      <div class="line-p">0%</div>
+    </div>
+    <div class="line">
+      <div class="line-h"><b style="color:var(--fw)">致動器設定</b><span>出廠有韌體；設 ID、限流、零點</span></div>
+      <div class="line-s">
+        <div class="st"><em>F1</em><b>工具協定</b></div><div class="arw">›</div>
+        <div class="st"><em>F2</em><b>逐顆設定</b></div><div class="arw">›</div>
+        <div class="st"><em>F3</em><b>設零點</b></div><div class="arw">›</div>
+        <div class="st"><em>F4</em><b>22 顆測通</b></div>
+      </div>
+      <div class="line-p">0%</div>
+    </div>
+    <div class="line">
+      <div class="line-h"><b style="color:var(--sw)">軟體</b><span>把模型放上機器人</span></div>
+      <div class="line-s">
+        <div class="st"><em>S1</em><b>CAN 驅動</b></div><div class="arw">›</div>
+        <div class="st"><em>S2</em><b>部署模型</b></div><div class="arw">›</div>
+        <div class="st"><em>S3</em><b>搖桿安全</b></div><div class="arw">›</div>
+        <div class="st"><em>S4</em><b>視覺整合</b></div>
+      </div>
+      <div class="line-p">0%</div>
+    </div>
+    <div class="line">
+      <div class="line-h"><b style="color:var(--ai)">AI 模型</b><span>在模擬裡把走路練出來</span></div>
+      <div class="line-s">
+        <div class="st done"><em>A1 完成</em><b>訓練行走基準</b></div><div class="arw">›</div>
+        <div class="st done"><em>A2 完成</em><b>蒸餾視覺策略</b></div><div class="arw">›</div>
+        <div class="st doing"><em>A3 進行中</em><b>站穩・下樓・換參數</b></div><div class="arw">›</div>
+        <div class="st"><em>A4</em><b>驗證匯出</b></div>
+      </div>
+      <div class="line-p on">75%</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sk">03</div>
+  <h2>硬體怎麼接</h2>
+  <p class="sub">GB10 負責模擬訓練與 Cosmos 世界模型；機載 Jetson 負責視覺、行走策略與即時控制。致動器一體式：馬達、減速、編碼器、驅動都在殼裡，對外只有電源跟 CAN 兩條線。</p>
+  <div class="sys">
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--ai)"></span>訓練端（桌上）</div>
+      <div class="bb"><div class="unit go"><b>GB10</b><small>Isaac Lab 訓練行走＋Cosmos3-Edge 世界模型後訓練；行走策略待匯出至機載</small></div></div>
+    </div>
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--sw)"></span>機載主控</div>
+      <div class="bb">
+        <div class="unit ac"><b>Jetson Orin Nano Super 8 GB</b><small>跑模型 25 Hz、控制迴圈 250 Hz、watchdog</small></div>
+        <div class="unit"><b>USB-CAN ×4</b><small>四條匯流排：左腿、右腿、左臂、右臂</small></div>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--hw)"></span>22 顆 RobStride 致動器</div>
+      <div class="bb">
+        <div class="ja">
+          <div>髖 pitch／roll、膝<i>RS06 ×6</i></div>
+          <div>髖 yaw、肩 pitch<i>RS02 ×4</i></div>
+          <div>踝 pitch、肩 roll／yaw、肘<i>RS00 ×8</i></div>
+          <div>踝 roll、腕<i>RS05 ×4</i></div>
+        </div>
+        <div class="unit"><small>每顆回傳位置、速度、扭矩、溫度</small></div>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--pw)"></span>電源</div>
+      <div class="bb"><div class="unit pw"><b>6S 鋰電 ×2 串成 12S → 斷路器 → 44.4 V</b><small>致動器直供（RS00／RS02 吃不了 24 V）；DC-DC 給 Jetson 19 V、週邊 12 V／5 V</small></div></div>
+    </div>
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--ai)"></span>感測</div>
+      <div class="bb">
+        <div class="unit"><b>雙目攝影機</b><small>左右影像同步拍攝，經立體匹配估算深度；基線設計 120 mm</small></div>
+        <div class="unit"><b>IMU</b><small>BNO085 或 IM10A</small></div>
+      </div>
+    </div>
+    <div class="blk">
+      <div class="bh"><span class="dot" style="background:var(--hw)"></span>結構</div>
+      <div class="bb">
+        <div class="unit"><b>骨架</b><small>2020 鋁擠＋3D 列印外殼（開源設計）</small></div>
+        <div class="unit ac"><b>轉接件 ×22（機構夥伴畫）</b><small>一邊鎖致動器、一邊接骨架</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="phases">
+  <div class="sk">04</div>
+  <h2>分四個階段做</h2>
+  <p class="sub">每個階段結束都有一個看得到的東西。第一階段只花一萬、一個週末，過了才花下一筆錢。</p>
+
+  <div class="phases">
+    <div class="phase first">
+      <div class="ph-k"><span class="n">第一階段</span><b>買一顆<br>試試看</b><span>第 1–4 週</span></div>
+      <div class="ph-b">
+        <h3>一顆致動器、一個轉接件、一個週末</h3>
+        <ol>
+          <li><b>買一顆 RS06</b>（最大的那顆，膝關節用）</li>
+          <li><b>3D 列印膝關節的轉接件</b>——一邊鎖致動器、一邊接骨架。機構夥伴拿 V1 的 CAD 跟 RobStride 的 STEP 畫，印出來試裝</li>
+          <li><b>裝上去測三件事</b>：掛重物看轉接件裂不裂、接 CAN 跑 250 Hz 看延遲、跑 30 分鐘看會不會熱</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">花多少</span><span class="v">約 1 萬<small>致動器＋耗材＋工具</small></span>
+        <span class="gate">✓ 三件都過 → 第二階段</span>
+        <span style="font-size:13px;color:var(--ink2)">轉接件裂了就加厚重印，不算失敗</span>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="ph-k"><span class="n">第二階段</span><b>雙腿<br>會走</b><span>第 5–20 週</span></div>
+      <div class="ph-b">
+        <h3>沒有手臂也能走——先做雙腿</h3>
+        <ol>
+          <li>買剩下 11 顆腿部致動器，印其餘轉接件與結構件</li>
+          <li>組雙腿＋軀幹、設定 12 顆、配線、Jetson 上機</li>
+          <li>吊掛 → 站 → 放開走 10 公尺</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">花多少</span><span class="v">約 4–6 萬<small>依採購管道</small></span>
+        <span class="gate">✓ 走 10 公尺 → 第一關達成</span>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="ph-k"><span class="n">第三階段</span><b>看得見<br>走得到</b><span>第 20–26 週</span></div>
+      <div class="ph-b">
+        <h3>加手臂、加眼睛</h3>
+        <ol>
+          <li>手臂 10 顆致動器上位</li>
+          <li>雙目攝影機標定、雜草辨識模型上機</li>
+          <li>看到草、走到草前面、站穩——<b>第一版決策大腦</b>（規則＋狀態機）</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">花多少</span><span class="v">約 7–8.5 萬<small>手臂＋相機＋電池</small></span>
+        <span class="gate">✓ 站穩 10 秒 → 第二關</span>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="ph-k"><span class="n">第四階段</span><b>拔草</b><span>第 26 週起</span></div>
+      <div class="ph-b">
+        <h3>蹲下、對準、剪</h3>
+        <ol>
+          <li>蹲姿平衡（模擬先練）</li>
+          <li>夾具設計、剪斷動作</li>
+          <li>用扭矩回饋判斷「草斷了沒」</li>
+          <li><b>第二版決策大腦</b>：以 Cosmos 為基礎發展 WAM，逐步學會「往哪走、何時蹲」</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">花多少</span><span class="v">夾具材料<small>金工外包</small></span>
+        <span class="gate">✓ 單株成功 ≥ 30% → 第三關</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="train">
+  <div class="sk">05</div>
+  <h2>Cosmos 預測世界，行走策略控制身體</h2>
+  <p class="sub">我們使用 NVIDIA Cosmos3-Edge 做世界模型後訓練，也在 Isaac Lab 訓練走路、上樓與站穩。兩條線最後要接起來：上層判斷怎麼完成任務，下層把身體動作穩定執行。</p>
+  <div class="relay">
+    <div class="rl done">
+      <div class="rl-n">1</div>
+      <div class="rl-b"><h3>Cosmos：學動作會帶來什麼結果</h3><p>輸入目前畫面、身體狀態與一串關節目標，預測未來 0.64 秒的畫面。已用模擬資料後訓練；動作產生與閉環決策是下一步。</p></div>
+      <div class="rl-r"><b>27.7 萬步</b><span>Cosmos3-Edge 後訓練；目前暫停</span></div>
+    </div>
+    <div class="rl done">
+      <div class="rl-n">2</div>
+      <div class="rl-b"><h3>Isaac Lab：練出行走與上樓能力</h3><p>用強化學習建立行走基準，再把動作能力蒸餾到使用視覺觀測的策略。現有辦公樓路線影片呈現的是這條行走訓練線的成果。</p></div>
+      <div class="rl-r"><b>119/128</b><span>參考策略上樓到頂；到頂站穩 10 秒仍為 0</span></div>
+    </div>
+    <div class="rl doing">
+      <div class="rl-n">3</div>
+      <div class="rl-b"><h3>雙目攝影機：從左右影像取得距離</h3><p>實機使用雙目攝影機，左右影像經標定與立體匹配算出深度圖，再提供給行走策略。既有模擬用深度圖加雙目誤差近似，還要對齊實際鏡頭、基線與延遲。</p></div>
+      <div class="rl-r"><b>16×32</b><span>既有策略的深度圖輸入尺寸；相機原始影像另存</span></div>
+    </div>
+    <div class="rl">
+      <div class="rl-n">4</div>
+      <div class="rl-b"><h3>整合：從候選動作評估走向自主決策</h3><p>先完成站穩與實機觀測介面，再讓 Cosmos 評估候選動作。接入上層速度指令前，要補錄對應資料、訓練介面並完成閉環評測。</p></div>
+      <div class="rl-r"><b>待整合</b><span>機載行走、安全控制與 GB10 世界模型</span></div>
+    </div>
+  </div>
+  <div class="vs">
+    <figure>
+      <video src="media/route_teacher.mp4" poster="media/route_teacher.jpg" controls preload="none" playsinline muted aria-label="Isaac Lab 參考行走策略的辦公樓路線模擬"></video>
+      <figcaption><b>行走基準・模擬</b>：走廊 → 折返樓梯 → 上層走廊 → 門口，64 趟有 56 趟到達。使用模擬地形資訊的參考策略。</figcaption>
+    </figure>
+    <figure>
+      <video src="media/route_student.mp4" poster="media/route_student.jpg" controls preload="none" playsinline muted aria-label="以深度圖為觀測的視覺行走策略模擬"></video>
+      <figcaption><b>視覺行走・模擬</b>：影片版本到達率 28%；後續路線蒸餾最好一段為 69%（12 段平均約 59%）。實機深度圖規劃由雙目影像計算。</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="sk">06</div>
+  <h2>決策大腦：先用規則讓它動，再換成世界模型</h2>
+  <p class="sub">「往哪走、什麼時候蹲、什麼時候剪」這層叫決策大腦。分兩版：第二版的世界模型<b>已經訓過 27.7 萬步</b>（目前暫停，GPU 先給走路技能），第一版先讓機器動起來，順便幫第二版錄真機資料。</p>
+  <div class="phases">
+    <div class="phase first">
+      <div class="ph-k"><span class="n">第一版</span><b>規則＋<br>狀態機</b><span>第三階段用</span></div>
+      <div class="ph-b">
+        <h3>YOLO 偵測草 → 地平面測距 → 狀態機發速度指令</h3>
+        <ol>
+          <li><b>看到草</b>：物件辨識模型框出雜草（發起人專長，已有 22 類模型上線經驗）</li>
+          <li><b>算多遠</b>：相機高度與俯角已知，從畫面位置直接算距離，不用深度學習</li>
+          <li><b>決定動作</b>：狀態機 approach → align → crouch → cut → verify，每步輸出速度指令給走路模型</li>
+          <li><b>同時錄下每一次</b>：影像、22 軸位置速度扭矩、指令、成敗——這是第二版的訓練資料</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">為什麼先用它</span><span class="v">兩週能動<small>零示範資料、機載 60 Hz</small></span>
+        <span style="font-size:13px;color:var(--ink2)">卡在哪一步看得到，好除錯</span>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="ph-k"><span class="n">第二版</span><b>Cosmos<br>世界模型</b><span>已訓 27.7 萬步・暫停中</span></div>
+      <div class="ph-b">
+        <h3>從 Cosmos 的動作條件預測，走向 WAM 決策</h3>
+        <ol>
+          <li><b>已在 GB10 上訓了 5 天</b>（09-14～09-19，Cosmos3-Edge，模擬資料）：學「照這串動作做，0.64 秒後會看到什麼」。給真動作時預測略好（約 2%），差距整體在變大，但集中在少數驗證窗；上限還沒量</li>
+          <li>第一版上機後錄的真機回合補進去續訓——補上真實光線、草地、接觸與失敗情境</li>
+          <li>現在的版本吃的是 22 個關節角度；要改成吃「速度指令」、接在走路模型上面，得重錄帶速度指令的資料。部署在 GB10，機載只跑走路模型跟安全層</li>
+          <li>先當「軌跡排序器」——狀態機提候選，世界模型挑最好的；穩了再讓它自己決策</li>
+        </ol>
+      </div>
+      <div class="ph-r">
+        <span class="lbl">換上去的條件</span><span class="v">贏過第一版<small>閉環成功率</small></span>
+        <span style="font-size:13px;color:var(--ink2)">真機資料 0 回合，第一版負責錄</span>
+      </div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:22px">走路那層另外有一條：世界模型當走路模型的<b>地形表徵</b>（四足機器人已有真機案例），草地走不穩的時候用。</p>
+</section>
+
+<section id="cost">
+  <div class="sk">07</div>
+  <h2>要花多少錢</h2>
+  <p class="sub">零件總計約 15.1–19.3 萬（依採購管道），印表機另計。分四個階段花，每階段的金額在上面 04；過了關卡才花下一筆。</p>
+  <div class="goals">
+    <div class="goal"><div class="g-n" style="color:var(--go)">最大宗</div><h3>22 顆關節</h3><p>中國原廠直購約 6.6–7 萬，Seeed 寄台灣約 10.9 萬。先買一顆驗證，過了才買其餘 21 顆。</p></div>
+    <div class="goal"><div class="g-n" style="color:var(--hold)">資金與人力</div><h3>4–5 位夥伴共同出資</h3><p>每人 5 萬，共約 20 萬，每週末一起做。帳目公開，機器人共有。</p></div>
+    <div class="goal"><div class="g-n" style="color:var(--stop)">先講清楚</div><h3>做不做得成沒有把握</h3><p>20 萬也可能不夠。所以才分階段、先花最小的一筆驗證，不一次投進去。</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sk">08</div>
+  <h2>會卡在哪裡，卡住了往哪走</h2>
+  <div class="risks">
+    <div class="risk"><div class="r-n" style="color:var(--hold)">轉接件撐不住</div><div class="r-p"><b>加厚重印</b><i>→</i><b>換碳纖尼龍</b><i>→</i><b>四顆改鋁件</b></div></div>
+    <div class="risk"><div class="r-n" style="color:var(--stop)">站不穩、拔不動</div><div class="r-p"><b>新增蹲姿訓練</b><i>→</i><b>改剪斷</b><i>→</i><b>蹲姿用體重帶</b></div></div>
+    <div class="risk"><div class="r-n" style="color:var(--hold)">模擬會走實機不會</div><div class="r-p"><b>補延遲與推力擾動</b><i>→</i><b>換引擎交叉驗證</b><i>→</i><b>先吊掛再放開</b></div></div>
+    <div class="risk"><div class="r-n" style="color:var(--hold)">戶外沒防水</div><div class="r-p"><b>護套防潑濺</b><i>→</i><b>乾燥天先測</b><i>→</i><b>暴露關節換防水版</b></div></div>
+  </div>
+</section>
+
+<section id="who">
+  <div class="sk">09</div>
+  <h2>誰在做</h2>
+  <p class="sub">發起人負責模擬、AI 與整合；機構（畫轉接件、結構）和電控（配電、22 顆馬達的 CAN）由夥伴負責。</p>
+  <div class="me">
+    <div class="sk">發起人</div>
+    <h3>Ethan：把現場變成模擬，再搬回真的機器</h3>
+    <ul class="me-l">
+      <li><b>物理模擬</b><span>顆粒與剛體 DEM 模擬，參數掃描跑過上萬件，拿結果回頭改設備設計</span></li>
+      <li><b>強化學習</b><span>8 月起在 Isaac Lab 訓練這台機器人：9 cm 樓梯最好連續爬 17 階；9 月的參考策略在 17–20 cm 折返梯 128 趟到頂 119 趟</span></li>
+      <li><b>世界模型</b><span>Cosmos3-Edge 動作條件後訓練，一段一段接力訓了 27.7 萬步</span></li>
+      <li><b>AI 視覺</b><span>訓練過 22 類物件辨識模型，實際部署上線在跑</span></li>
+      <li><b>硬體</b><span>無人機自己焊、自己組、自己調飛控；桌上手臂＋相機、手臂＋LLM 做垃圾分類；ESP32／IoT、語音互動裝置</span></li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>骨架與訓練環境來自 Berkeley Humanoid Lite（MIT／CC BY-SA 4.0）；致動器 RobStride。模擬成功率為固定量尺獨立評測並逐幀驗證。標示「0%」「未開始」的就是還沒做到。</p>
+    <p style="margin-top:12px">Ethan Lin．2026-09</p>
+  </div>
+</footer>

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>發起人 Ethan Lin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F5F6F8; --soft2:#EAEDF0;
+  --ink:#16191D; --ink2:#5B6470; --ink3:#636C78; --line:#DFE3E8;
+  --ac:#E8591C; --ac-bg:#FDEEE6;
+  --go:#2E9E62; --go-bg:#E6F5EC;
+  --clip:#0E1012;
+  --ac-strong:#C2410C; --on-ac:#FFFFFF;
+  --sans:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1C2024; --soft2:#252A2F;
+  --ink:#ECEFF2; --ink2:#AEB6BF; --ink3:#949DA7; --line:#2C3238;
+  --ac:#FF7A3D; --ac-bg:#33200F; --go:#4FBF84; --go-bg:#16301F;
+  --clip:#08090A;
+  --ac-strong:#FF7A3D; --on-ac:#14171A;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#14171A; --soft:#1C2024; --soft2:#252A2F;
+  --ink:#ECEFF2; --ink2:#AEB6BF; --ink3:#949DA7; --line:#2C3238;
+  --ac:#FF7A3D; --ac-bg:#33200F; --go:#4FBF84; --go-bg:#16301F;
+  --clip:#08090A;
+  --ac-strong:#FF7A3D; --on-ac:#14171A;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:32px}
+h1,h2,h3{margin:0;font-weight:900;line-height:1.2;text-wrap:balance}
+p{margin:0}
+a{color:var(--ac);font-weight:700;text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,video:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
+.back{display:inline-block;margin-top:28px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.04em;text-decoration:none}
+.hero{padding-block:40px 52px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--ac);font-weight:700;text-transform:uppercase}
+h1{font-size:clamp(32px,5.4vw,56px);letter-spacing:-.025em;margin-top:18px}
+h1 .quiet{display:block;color:var(--ink2);font-weight:700;font-size:.62em;letter-spacing:-.01em;margin-top:14px}
+.lede{font-size:clamp(17px,2vw,20px);color:var(--ink2);margin-top:22px;max-width:60ch;line-height:1.6}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;margin-top:38px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.nums>div{background:var(--bg);padding:18px 20px}
+.nums b{display:block;font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--ac);font-variant-numeric:tabular-nums}
+.nums span{font-size:14px;color:var(--ink2);display:block;margin-top:4px;line-height:1.45}
+section{padding-block:56px;scroll-margin-top:24px}
+#smart-bin{scroll-margin-top:24px}
+section+section{border-top:1px solid var(--line)}
+.sk{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ac);letter-spacing:.08em}
+h2{font-size:clamp(24px,3.4vw,34px);margin-top:10px;letter-spacing:-.02em}
+.sub{font-size:17.5px;color:var(--ink2);margin-top:14px;max-width:64ch;line-height:1.65}
+.say{margin-top:18px;font-size:17px;font-weight:700;max-width:60ch;line-height:1.55;padding-left:14px;border-left:3px solid var(--ac)}
+/* 影片 */
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:28px}
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:28px}
+.clip{margin:0;display:flex;flex-direction:column;gap:10px}
+.clip .frame{position:relative;background:var(--clip);border-radius:8px;overflow:hidden;aspect-ratio:16/9;max-width:100%}
+.clip.tall .frame{aspect-ratio:4/3}
+.clip video{display:block;width:100%;height:100%;object-fit:contain;background:var(--clip);cursor:pointer}
+.clip .tag{position:absolute;right:10px;top:10px;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.05em;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:4px;pointer-events:none}
+.clip figcaption{display:flex;flex-direction:column;gap:3px}
+.clip figcaption .ck{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.04em}
+.clip figcaption b{font-size:16.5px;line-height:1.4}
+.clip figcaption small{font-size:14.5px;color:var(--ink2);line-height:1.5}
+.after{margin-top:26px;font-size:16px;color:var(--ink2);max-width:66ch;line-height:1.65;background:var(--soft);border-radius:8px;padding:16px 20px}
+.after b{color:var(--ink)}
+.aside{align-self:center;background:var(--soft);border-radius:8px;padding:22px 24px}
+.aside b{font-size:17px}
+.aside p{font-size:15.5px;color:var(--ink2);margin-top:8px;line-height:1.6}
+/* 歷程中的重點作品 */
+.project-video{margin-top:14px}
+.project-video .video-heading{color:var(--ac);font-size:15px;font-weight:700}
+.project-video .clip{margin-top:14px;max-width:640px}
+/* 九個月時間軸 */
+.tl{margin-top:30px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:110px 1fr 120px;gap:22px;padding-block:20px;border-bottom:1px solid var(--line);align-items:center}
+.row .when{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ink3);font-variant-numeric:tabular-nums;padding-top:3px}
+.row h3{font-size:19px;font-weight:700}
+.row p{font-size:15.5px;color:var(--ink2);margin-top:5px;line-height:1.55;max-width:58ch}
+.row .see{font-family:var(--mono);font-size:12.5px;color:var(--ink3);margin-top:6px;display:block}
+.row .mini{border-radius:6px;overflow:hidden;background:var(--clip);aspect-ratio:9/16;max-width:120px;width:100%}
+.row .mini video{display:block;width:100%;height:100%;object-fit:cover;cursor:pointer}
+.row.on .when{color:var(--ac)}
+@media(max-width:700px){
+  .row{grid-template-columns:1fr;gap:8px}
+  .row .mini{max-width:180px}
+}
+/* 我相信 */
+.belief{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:26px}
+.belief div{background:var(--soft);border-radius:8px;padding:20px 22px}
+.belief b{display:block;font-size:17px}
+.belief p{font-size:15.5px;color:var(--ink2);margin-top:8px;line-height:1.6}
+blockquote{margin:30px 0 0;font-size:clamp(18px,2.2vw,22px);font-weight:700;line-height:1.55;max-width:44ch;color:var(--ink)}
+blockquote cite{display:block;font-style:normal;font-family:var(--mono);font-size:12.5px;color:var(--ink3);margin-top:10px;font-weight:500}
+.cta{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:26px 28px;margin-top:26px}
+.cta p{font-size:16.5px;color:var(--ink2);line-height:1.6;max-width:62ch}
+.cta p+p{margin-top:12px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.links a{display:inline-block;border:1.5px solid var(--ac);border-radius:6px;padding:9px 16px;text-decoration:none;font-size:15px}
+.links a.main{background:var(--ac-strong);border-color:var(--ac-strong);color:var(--on-ac)}
+footer{border-top:1px solid var(--line);background:var(--soft);margin-top:20px}
+footer .wrap{padding-block:28px 46px}
+footer p{font-size:13.5px;color:var(--ink3);line-height:1.75}
+@media(max-width:600px){.wrap{padding-inline:18px}}
+
+/* 個人歷程：左文右圖，點擊開啟播放器 */
+.row{grid-template-columns:80px minmax(0,1fr) minmax(220px,320px);align-items:center;gap:24px;padding-block:24px}
+.row>div{min-width:0}
+.row .mini{width:100%;max-width:none;aspect-ratio:16/9}
+.history-videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.history-videos .frame{aspect-ratio:16/9}
+.history-videos figcaption b{font-size:12px}
+.video-preview{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:var(--clip);color:white;cursor:pointer;border-radius:8px;overflow:hidden}
+.video-preview img{display:block;width:100%;height:100%;object-fit:contain}
+.preview-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.65);font-size:18px}
+.preview-label{position:absolute;bottom:0;left:0;right:0;padding:6px 4px;background:rgba(0,0,0,.7);font:12px var(--sans)}
+.video-preview:hover .preview-play{background:var(--ac-strong)}
+.video-preview:focus-visible{outline:3px solid var(--ac);outline-offset:3px}
+.clip,.frame,.trio>*{min-width:0}
+.video-dialog{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg);color:var(--ink);width:min(960px,94vw);max-height:94vh;overflow:auto}
+.video-dialog::backdrop{background:rgba(0,0,0,.8)}
+.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+.dialog-top h2{font-size:18px;margin:0}
+.dialog-close{flex-shrink:0;padding:8px 14px;border:1px solid var(--line);border-radius:6px;background:var(--soft);color:var(--ink);cursor:pointer;font:inherit}
+.video-dialog video{display:block;width:100%;max-height:75vh;background:#08090a}
+body.video-open{overflow:hidden}
+@media(max-width:760px){
+ .row{grid-template-columns:65px minmax(0,1fr);gap:12px}
+ .row>.mini,.row>.history-videos{grid-column:2;width:100%;max-width:360px}
+ .row>div:last-child:empty{display:none}
+ .pair,.trio,.belief{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+
+<div class="wrap">
+
+<a class="back" href="index.html">← 拔草機器人．一頁看懂</a>
+
+<header class="hero">
+  <div class="eyebrow">發起人 · 自我介紹</div>
+  <h1>我是 Ethan。<span class="quiet">從視覺辨識、動手做機器，到模擬與世界模型。</span></h1>
+  <p class="lede">這裡記錄我從 2025 年底到現在的實作歷程：部署辨識模型、操作手臂、組裝無人機、做智能垃圾桶，再走進物理模擬、強化學習與 Cosmos 世界模型。每個階段，都留下實際做過的作品與畫面。</p>
+  <div class="nums">
+    <div><b>9 個月</b><span>從視覺辨識，走到機器人與世界模型</span></div>
+    <div><b>22 類</b><span>物件辨識模型，實際部署上線</span></div>
+    <div><b>上萬件</b><span>DEM 物理模擬參數掃描</span></div>
+    <div><b>17 階</b><span>9 cm 樓梯上最好的一次連續爬升（中位 8 階）</span></div>
+  </div>
+</header>
+
+<section id="history">
+  <div class="sk">個人歷程 · 2025—2026</div>
+  <h2>我一路做過的事</h2>
+  <p class="sub">從辨識畫面，到讓機器動起來，再到模擬與訓練。沿著時間看，每一段經歷都接著下一個想解決的問題。</p>
+  <div class="tl">
+    <div class="row">
+      <div class="when">2025-12</div>
+      <div><h3>YOLO 視覺辨識 × 智能垃圾桶</h3><p>訓練 22 類物件辨識模型，整合到智能垃圾桶並實際部署上線。</p></div>
+      <div class="mini" id="smart-bin"><button class="video-preview" type="button" data-video="media/smart_bin.mp4" data-title="智能垃圾桶 · 2 分 11 秒" aria-label="放大播放：智能垃圾桶 · 2 分 11 秒"><img src="media/smart_bin.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button></div>
+    </div>
+    <div class="row">
+      <div class="when">2026</div>
+      <div><h3>真機控制</h3><p>桌上型手臂＋相機，從猜拳辨識做到物體跟蹤。另外做過手臂＋LLM：讓手臂聽懂你在說什麼，跟你互動完成垃圾分類。</p></div>
+      <div class="mini"><button class="video-preview" type="button" data-video="media/desk_arm.mp4" data-title="桌上型手臂與相機互動" aria-label="放大播放：桌上型手臂與相機互動"><img src="media/desk_arm.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button></div>
+    </div>
+    <div class="row">
+      <div class="when">2026</div>
+      <div><h3>工業手臂</h3><p>FANUC ER-4iA 六軸工業手臂實訓，夾取、放料盤。</p></div>
+      <div class="history-videos"><figure class="clip"><div class="frame"><button class="video-preview" type="button" data-video="media/fanuc_1.mp4" data-title="FANUC 工業手臂實訓片段 1" aria-label="放大播放：FANUC 工業手臂實訓片段 1"><img src="media/fanuc_1.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button></div><figcaption><b>工業手臂實訓 · 1</b></figcaption></figure><figure class="clip"><div class="frame"><button class="video-preview" type="button" data-video="media/fanuc_2.mp4" data-title="FANUC 工業手臂實訓片段 2" aria-label="放大播放：FANUC 工業手臂實訓片段 2"><img src="media/fanuc_2.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button></div><figcaption><b>工業手臂實訓 · 2</b></figcaption></figure></div>
+    </div>
+    <div class="row on">
+      <div class="when">2026-07</div>
+      <div><h3>物理模擬</h3><p>顆粒與剛體 DEM 模擬，跑過上萬件參數掃描。</p><span class="see"><a href="#dem-work">觀看下方 DEM 模擬作品 ↓</a></span></div>
+      <div></div>
+    </div>
+    <div class="row">
+      <div class="when">2026-08</div>
+      <div><h3>AI agent 與語音互動</h3><p>ESP32-S3 語音助理，從嵌入式開發、除錯到語音互動裝置。</p></div>
+      <div></div>
+    </div>
+    <div class="row">
+      <div class="when">2026-08</div>
+      <div><h3>移動載具</h3><p>四軸無人機：自己買零件、自己焊、自己組、自己調飛控跟 GPS、自己飛。</p></div>
+      <div class="mini"><button class="video-preview" type="button" data-video="media/drone.mp4" data-title="自組四軸懸停試飛" aria-label="放大播放：自組四軸懸停試飛"><img src="media/drone.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button></div>
+    </div>
+    <div class="row on">
+      <div class="when">2026-08</div>
+      <div><h3>強化學習</h3><p>Berkeley Humanoid Lite 在 Isaac Lab 學走路、爬樓梯，再蒸餾成視覺行走策略。實機使用雙目攝影機，由左右影像估算深度；模擬與實機的觀測介面仍要對齊。目前練站穩，下樓改從 5 cm 單階開始。</p><span class="see"><a href="#rl-work">觀看下方訓練歷程 ↓</a></span></div>
+      <div></div>
+    </div>
+    <div class="row">
+      <div class="when">2026-09</div>
+      <div><h3>Cosmos 世界模型</h3><p>使用 NVIDIA Cosmos3-Edge，把畫面、身體狀態與關節動作配在一起，學未來 0.64 秒的視覺變化。已後訓練 27.7 萬步，目前具備的是畫面預測能力；下一步沿 WAM（世界動作模型）方向，加入候選動作評估與動作產生，接到行走控制。</p></div>
+      <div></div>
+    </div>
+  </div>
+</section>
+
+<section id="dem-work">
+  <div class="sk">物理模擬</div>
+  <h2>同一個場景，先在電腦裡跑過幾萬次</h2>
+  <p class="sub">真實世界的散料髒、變形、混在一起，很難靠想像設計機器。我用 DEM（離散元素法，顆粒加剛體）自己建模擬：一整綑 1×1×1.6 m 的料被夾住、往前推，參數掃描跑過上萬件，再拿結果回頭改設計。</p>
+  <div class="pair">
+    <figure class="clip tall">
+      <div class="frame"><button class="video-preview" type="button" data-video="media/dem_sim.mp4" data-title="DEM 物理模擬：一整綑料被夾住推開" aria-label="放大播放：DEM 物理模擬：一整綑料被夾住推開"><img src="media/dem_sim.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button><span class="tag">DEM 模擬</span></div>
+      <figcaption><span class="ck">FULL BALE 1×1×1.6 m · 自建</span><b>顆粒＋剛體的物理模擬</b><small>每一顆料都算碰撞與摩擦；跑一次看一種設計，跑上萬次才知道哪種好。</small></figcaption>
+    </figure>
+    <div class="aside">
+      <b>把現場問題，做成可以反覆比較的模擬</b>
+      <p>我自己建立顆粒與剛體的模擬，觀察整綑料被夾住、推開時的行為，再用參數掃描比較不同設計。這段作品記錄了我從現場問題走向物理模擬的過程。</p>
+    </div>
+  </div>
+  <p class="say">同一個場景，我先在電腦裡跑過幾萬次，才知道機器該怎麼設計。</p>
+</section>
+
+<section id="rl-work">
+  <div class="sk">強化學習</div>
+  <h2>同一隻機器人：從上不去，到連續爬 17 階</h2>
+  <p class="sub">Berkeley Humanoid Lite 在 Isaac Lab 裡自己學爬樓梯，三支都是 8 月的訓練實錄。左邊是訓練用的金字塔階梯地形；中間和右邊是 20 階、每階 9 cm 的直跑梯，左上角的階數是逐幀標註，不是目測。</p>
+  <div class="trio">
+    <figure class="clip">
+      <div class="frame"><button class="video-preview" type="button" data-video="media/rl_v1.mp4" data-title="第一版策略，站在樓梯前上不去" aria-label="放大播放：第一版策略，站在樓梯前上不去"><img src="media/rl_v1.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button><span class="tag">一開始</span></div>
+      <figcaption><span class="ck">第一版 · 1,800 迭代</span><b>學會的是站穩，不是爬</b><small>中位爬升 8.6 cm，連一階都不到。</small></figcaption>
+    </figure>
+    <figure class="clip">
+      <div class="frame"><button class="video-preview" type="button" data-video="media/rl_fall.mp4" data-title="爬到第 13 階摔下來" aria-label="放大播放：爬到第 13 階摔下來"><img src="media/rl_fall.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button><span class="tag">中間</span></div>
+      <figcaption><span class="ck">跌倒實錄 · 九次驗證之一</span><b>爬得上，站不穩</b><small>爬到 13 階摔下來；九次裡有兩次第 1 階就摔。</small></figcaption>
+    </figure>
+    <figure class="clip">
+      <div class="frame"><button class="video-preview" type="button" data-video="media/rl_17.mp4" data-title="連續爬 17 階" aria-label="放大播放：連續爬 17 階"><img src="media/rl_17.jpg" alt="" loading="lazy"><span class="preview-play" aria-hidden="true">▶</span><span class="preview-label">點擊放大播放</span></button><span class="tag">8 月底</span></div>
+      <figcaption><span class="ck">驗證版 · 逐幀標註</span><b>連續爬 17 階</b><small>九次最好 17 階、中位 8 階，那時還沒有一次到頂。</small></figcaption>
+    </figure>
+  </div>
+  <p class="say">策略不是寫出來的，是摔出來的——跌倒不是失敗，是資料。</p>
+  <p class="after">九月在 17–20 cm 級高的折返樓梯，Isaac Lab 行走參考策略達到 <b>119／128 趟到頂</b>；到頂站穩 10 秒仍為 0，正在補這個技能。同時，我已用 NVIDIA Cosmos3-Edge 做動作條件世界模型後訓練，研究「這樣動，接下來會看到什麼」。</p>
+</section>
+
+<section>
+  <div class="sk">我相信</div>
+  <h2>機器人會變成下一個作業系統</h2>
+  <div class="belief">
+    <div><b>物理世界才是真正大量的地方</b><p>1980 到 2000 年，第一批會用電腦的人吃到了之後三十年。寫程式、文書、客服的 AI 已經很擠；搬、抓、分、清、運這些體力工作，還幾乎沒被碰。第一批會訓練、會使用機器人的人，會站在下一輪的起點。</p></div>
+    <div><b>我這樣學</b><p>先把一個領域的語言弄懂；大部分問題是常見問題，廣度靠一個接一個的專案累積；深度留給最難的那個問題。</p></div>
+  </div>
+  <blockquote>想要偉大必定得痛苦，因為它沒這麼容易；熱情與好奇心，是我們忍受痛苦的橋樑。<cite>— Ethan</cite></blockquote>
+</section>
+
+<section>
+  <div class="sk">為什麼找你</div>
+  <h2>模擬一個人推得動，實機要四個人</h2>
+  <div class="cta">
+    <p>機器人在虛擬世界裡已經會走、會爬樓梯；真的機器需要有人畫支架、配電、接 22 顆馬達、把相機裝上去。機構、電控、訓練或視覺，你會其中一項就好——有興趣優先，每週都會出現的人最重要。</p>
+    <p>見面前不收任何費用，先約一頓飯，在台中。</p>
+    <div class="links">
+      <a class="main" href="index.html">一頁看懂這個專案</a>
+      
+      <a href="architecture.html">架構圖</a>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>智能垃圾桶影片為大豐產品介紹；其他影片是本人拍攝、自建的模擬，或自己訓練的畫面；機器人模型來自 Berkeley Humanoid Lite（MIT／CC BY-SA 4.0）。模擬數字以固定量尺評測，標示「0」的就是還沒做到。</p>
+    <p style="margin-top:10px">Ethan Lin．2026-09</p>
+  </div>
+</footer>
+
+<dialog class="video-dialog" aria-labelledby="video-title">
+  <div class="dialog-top"><h2 id="video-title">作品影片</h2><button type="button" class="dialog-close">關閉 ✕</button></div>
+  <video controls playsinline preload="none"></video>
+</dialog>
+<script>
+(function(){
+  var dialog=document.querySelector('.video-dialog');
+  var player=dialog.querySelector('video');
+  document.querySelectorAll('.video-preview').forEach(function(button){
+    button.addEventListener('click',function(){
+      document.getElementById('video-title').textContent=button.dataset.title;
+      player.src=button.dataset.video;
+      dialog.showModal();
+      document.body.classList.add('video-open');
+      player.play().catch(function(){});
+    });
+  });
+  dialog.querySelector('.dialog-close').addEventListener('click',function(){dialog.close();});
+  dialog.addEventListener('click',function(event){
+    var r=dialog.getBoundingClientRect();
+    if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)){dialog.close();}
+  });
+  dialog.addEventListener('close',function(){
+    player.pause();player.removeAttribute('src');player.load();
+    document.body.classList.remove('video-open');
+  });
+})();
+</script>
